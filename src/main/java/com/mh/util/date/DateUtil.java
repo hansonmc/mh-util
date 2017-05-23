@@ -1,4 +1,4 @@
-package com.mh.util;
+package com.mh.util.date;
 
 import org.apache.commons.lang3.StringUtils;
 
