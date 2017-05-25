@@ -12,6 +12,7 @@ import java.util.Date;
 public class DateUtil {
 
     public static final String DEFAULT_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    private static String YYYYMMDDHHMMSS= "yyyyMMddHHmmss";
 
     /**
      * 初始化 年 月 日
@@ -71,6 +72,15 @@ public class DateUtil {
         }
         return sdf.format(date);
     }
+
+    /**
+     * 当前时间，格式：yyyyMMddHHmmss
+     * @return
+     */
+    public static String getCurrentDatetime() {
+        return new SimpleDateFormat(YYYYMMDDHHMMSS).format( new Date());
+    }
+
     public static void main(String[] args) {
         Date beginDate = setDate(2017,5,1);
         Date endDate = setDate(2017,5,31);
