@@ -81,13 +81,44 @@ public class DateUtil {
         return new SimpleDateFormat(YYYYMMDDHHMMSS).format( new Date());
     }
 
-    public static void main(String[] args) {
+    /**
+     * 得到当前月的天数
+     * @return
+     */
+    public static int getCurrentMonthLastDay() {
+        Calendar a = Calendar.getInstance();
+        a.set(Calendar.DATE, 1);//把日期设置为当月第一天
+        a.roll(Calendar.DATE, -1);//日期回滚一天，也就是最后一天
+        int maxDate = a.get(Calendar.DATE);
+        return maxDate;
+    }
+
+    /**
+     * 得到指定月的天数
+     * */
+    public static int getMonthLastDay(int year, int month) {
+        Calendar a = Calendar.getInstance();
+        a.set(Calendar.YEAR, year);
+        a.set(Calendar.MONTH, month - 1);
+        a.set(Calendar.DATE, 1);//把日期设置为当月第一天
+        a.roll(Calendar.DATE, -1);//日期回滚一天，也就是最后一天
+        int maxDate = a.get(Calendar.DATE);
+        return maxDate;
+    }
+
+    /**
+     * 循环日期模板
+     */
+    public static void loop(){
         Date beginDate = setDate(2017,5,1);
         Date endDate = setDate(2017,5,31);
-
         int i = 1;
         for(Date indexDate = beginDate; indexDate.getTime() <= endDate.getTime(); indexDate = setDate(2017,5,++i)){
             System.out.println(format(indexDate));
         }
+    }
+    public static void main(String[] args) {
+        System.out.println(getCurrentMonthLastDay());
+        System.out.println(getMonthLastDay(2017,0));
     }
 }
