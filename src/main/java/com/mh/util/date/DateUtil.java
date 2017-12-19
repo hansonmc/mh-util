@@ -2,6 +2,7 @@ package com.mh.util.date;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -125,6 +126,20 @@ public class DateUtil {
         long between_days=(time2-time1)/(1000*3600*24);
 
         return Integer.parseInt(String.valueOf(between_days));
+    }
+
+    /**
+     * 验证是否满18岁
+     * @param idNo
+     * @return
+     */
+    public static boolean validateAge(String idNo) throws ParseException {
+        int year = Integer.parseInt(idNo.substring(6, 10));
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        Date update = null;
+        update = sdf.parse(String.valueOf(year + 18) + idNo.substring(10, 14));
+        Date today = new Date();
+        return today.after(update);
     }
 
     /**
