@@ -1,4 +1,4 @@
-package com.mh.util.sign;
+package com.mh.util.security.sign;
 
 public enum SignatureAlgorithm {
 

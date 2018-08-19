@@ -1,6 +1,4 @@
-package com.mh.util.sign;
-
-import org.apache.commons.io.IOUtils;
+package com.mh.util.security.sign;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
