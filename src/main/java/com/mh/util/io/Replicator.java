@@ -13,12 +13,10 @@ public class Replicator {
     }
 
     public static void copy(File srcFile, File descFile) {
-        if (!descFile.exists()) {
-            boolean isMkdirs = descFile.mkdirs();
-            System.out.println("创建目录[" + descFile + "]:" + (isMkdirs ? "成功" : "失败"));
-        }
+        mkdirs(descFile);
         if (srcFile.isFile()) {
             String desc = descFile.getAbsolutePath() + File.separator + srcFile.getName();
+            // 写内容
             write(srcFile, new File(desc));
         } else {
             String desc = descFile.getAbsolutePath() + File.separator + srcFile.getName();
@@ -26,13 +24,12 @@ public class Replicator {
             File[] fileInners = srcFile.listFiles();
             if (fileInners != null && fileInners.length > 0) {
                 for (File fileInner : fileInners) {
+                    // 递归调用创建文件夹或写内容
                     copy(fileInner, descFileInner);
                 }
             }else{
-                if(!descFileInner.exists()){
-                 boolean isMkdirs = descFileInner.mkdirs();
-                System.out.println("创建目录[" + descFileInner + "]:" + (isMkdirs ? "成功" : "失败"));
-                }
+                // 空文件夹也创建
+                mkdirs(descFileInner);
             }
         }
     }
@@ -73,6 +70,13 @@ public class Replicator {
             }
         }
 
+    }
+
+    private static void mkdirs(File file){
+        if (!file.exists()) {
+            boolean isMkdirs = file.mkdirs();
+            System.out.println("创建目录[" + file + "]:" + (isMkdirs ? "成功" : "失败"));
+        }
     }
 
     public static void main(String[] args){
