@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
+ * JDBC简单操作
  * @author MH
  */
 public class JDBCUtils {
