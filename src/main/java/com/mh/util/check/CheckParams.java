@@ -7,6 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
-public @interface CheckNotNull {
-    String value();
+public @interface CheckParams {
+    String[] keywords();
+    String tip();
 }

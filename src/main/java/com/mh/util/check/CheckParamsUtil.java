@@ -3,12 +3,15 @@ package com.mh.util.check;
 import java.lang.reflect.Field;
 import java.util.Date;
 
-public class CheckNotNullUtil {
+public class CheckParamsUtil {
 
     /**
      * 校验POJO不能为空
      */
-    public static String check(Object obj) throws IllegalAccessException {
+    public static String check(Object obj, String keyword) throws IllegalAccessException {
+        if(keyword == null){
+            throw new RuntimeException("keyword不能为空");
+        }
         StringBuilder result = new StringBuilder();
         if(obj == null){
             return null;
@@ -17,17 +20,20 @@ public class CheckNotNullUtil {
             Field[] fields = tClass.getDeclaredFields();
             if(fields != null){
                 for(Field field : fields){
-                    if(field.isAnnotationPresent(CheckNotNull.class)){
-                        CheckNotNull annotation = field.getAnnotation(CheckNotNull.class);
+                    if(field.isAnnotationPresent(CheckParams.class)){
+                        CheckParams checkParams = field.getAnnotation(CheckParams.class);
                         field.setAccessible(true);
                         Object value = field.get(obj);
-                        if(value instanceof String){
-                            String strValue = (String) value;
-                            if(strValue == null || strValue.length() == 0){
-                                result.append(annotation.value()).append(",");
+                        String[] keywords = checkParams.keywords();
+                        if(containsKey(keyword, keywords)){
+                            if(value instanceof String){
+                                String strValue = (String) value;
+                                if(strValue == null || strValue.length() == 0){
+                                    result.append(checkParams.tip()).append(",");
+                                }
+                            }else if (value == null){
+                                result.append(checkParams.tip()).append(",");
                             }
-                        }else if (value == null){
-                            result.append(annotation.value()).append(",");
                         }
                         field.setAccessible(false);
                     }
@@ -41,11 +47,24 @@ public class CheckNotNullUtil {
         return result.toString();
     }
 
+    public static boolean containsKey(String keyword, String[] keywords){
+        if(keyword == null){
+            return false;
+        }
+
+        for(String k : keywords ){
+            if(keyword.equals(k)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
-        User user = new User(null, "", null);
+        User user = new User(null, "111", null);
 
         try {
-            String check = CheckNotNullUtil.check(user);
+            String check = CheckParamsUtil.check(user,"add");
             System.out.println(check);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
@@ -56,13 +75,13 @@ public class CheckNotNullUtil {
 }
 
 class User{
-    @CheckNotNull(value = "id不能为NULL")
+    @CheckParams(keywords = {"add"}, tip = "id不能为NULL")
     private Integer id;
 
-    @CheckNotNull(value = "姓名不能为NULL")
+    @CheckParams(keywords = {"add"}, tip = "姓名不能为NULL")
     private String name;
 
-    @CheckNotNull(value = "生日不能为NULL")
+    @CheckParams(keywords = {"add"}, tip = "生日不能为NULL")
     private Date birthday;
 
 
